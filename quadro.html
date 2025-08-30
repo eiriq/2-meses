@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>Nosso Scrapbook Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Kalam:wght@400;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        /* Fontes */
+        .dancing { font-family: "Dancing Script", cursive; }
+        .kalam { font-family: "Kalam", cursive; }
+        .bebas { font-family: "Bebas Neue", sans-serif; }
+        
+        /* Vídeo de fundo */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
+        
+        /* Camada de textura sobre o vídeo */
+        .texture-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("https://www.transparenttextures.com/patterns/crisp-paper-ruffles.png");
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        /* Efeito de fita adesiva */
+        .tape {
+            position: absolute;
+            width: 60px;
+            height: 18px;
+            background: linear-gradient(45deg, rgba(255,255,255,0.8), rgba(240,240,240,0.6));
+            transform: rotate(-45deg);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        
+        /* Sombra de foto premium */
+        .photo-shadow {
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3), 0 0 0 2px #fff, 0 0 0 4px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .photo-shadow:hover {
+            transform: scale(1.05) !important;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4), 0 0 0 3px #fff, 0 0 0 6px rgba(0,0,0,0.15);
+        }
+        
+        /* Animações */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-8px) rotate(1deg); }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 12px rgba(255,105,180,0.5); }
+            50% { box-shadow: 0 0 25px rgba(255,105,180,0.8); }
+        }
+        @keyframes rotate-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .float { animation: float 5s ease-in-out infinite; }
+        .pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+        .rotate-slow { animation: rotate-slow 25s linear infinite; }
+        
+        /* Efeitos de filtro */
+        .vintage { filter: sepia(0.3) contrast(1.1) brightness(1.05); }
+        .dreamy { filter: brightness(1.1) saturate(1.2) hue-rotate(10deg); }
+        .dramatic { filter: contrast(1.3) brightness(0.9) grayscale(0.2); }
+        
+        /* Molduras decorativas */
+        .polaroid {
+            background: #fff;
+            padding: 10px 10px 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            position: relative;
+        }
+        .polaroid::after {
+            content: attr(data-caption);
+            position: absolute;
+            bottom: 6px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-family: "Kalam", cursive;
+            font-size: 12px;
+            color: #333;
+        }
+        
+        /* Partículas flutuantes */
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.6;
+            z-index: 5;
+        }
+        
+        /* Camada de brilho */
+        .glow-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 30% 40%, rgba(255,182,193,0.3) 0%, transparent 60%),
+                        radial-gradient(circle at 70% 80%, rgba(173,216,230,0.3) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        /* Ajustes para mobile */
+        @media (max-width: 640px) {
+            .photo-container {
+                transform: scale(0.85);
+                transform-origin: top center;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen overflow-x-hidden relative">
+    <!-- Vídeo de fundo -->
+    <video autoplay muted loop playsinline class="video-background">
+        <source src="fundo.mp4" type="video/mp4">
+        <!-- Fallback para navegadores que não suportam vídeo -->
+        <div class="bg-gradient-to-br from-pink-100 via-purple-50 to-indigo-100 w-full h-full"></div>
+    </video>
+    
+    <!-- Camadas de efeito -->
+    <div class="texture-overlay"></div>
+    <div class="glow-overlay"></div>
+    
+    <!-- Container principal - Otimizado para mobile -->
+    <div class="max-w-md mx-auto relative z-10 photo-container">
+        <!-- Cabeçalho com efeitos -->
+        <div class="relative mb-12 mt-6 text-center">
+            <h1 class="dancing text-5xl text-pink-600 relative inline-block mb-2">
+                Nosso Amor
+                <div class="tape top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-5"></div>
+            </h1>
+            <p class="bebas text-2xl text-purple-800 tracking-widest">MEMÓRIAS INESQUECÍVEIS</p>
+            <div class="mt-3 flex justify-center space-x-2">
+                <i class="fas fa-heart text-pink-500 text-xl pulse-glow"></i>
+                <i class="fas fa-infinity text-purple-500 text-xl rotate-slow"></i>
+                <i class="fas fa-heart text-pink-500 text-xl pulse-glow"></i>
+            </div>
+        </div>
+
+        <!-- Seção 1: Cluster superior -->
+        <div class="relative mb-16 min-h-[350px]">
+            <!-- Foto 1 - Polaroid grande -->
+            <div class="absolute top-0 left-0 z-30 rotate-[-6deg] float">
+                <div class="polaroid photo-shadow" data-caption="Nosso início">
+                    <img src="1.jpg" class="w-40 h-48 object-cover vintage">
+                </div>
+            </div>
+            
+            <!-- Foto 2 - Sobreposta -->
+            <div class="absolute top-8 left-32 z-40 rotate-[10deg]">
+                <img src="2.jpg" class="photo-shadow w-28 h-36 object-cover dreamy rounded-lg">
+                <div class="tape top-2 left-2 w-12 h-4"></div>
+            </div>
+            
+            <!-- Foto 3 - Tira vertical -->
+            <div class="absolute top-0 right-8 z-20 rotate-[2deg]">
+                <img src="3.jpg" class="photo-shadow w-16 h-48 object-cover dramatic rounded">
+            </div>
+            
+            <!-- Foto 4 - Pequena decorativa -->
+            <div class="absolute top-20 right-24 z-25 rotate-[-12deg]">
+                <img src="4.jpg" class="photo-shadow w-24 h-24 object-cover rounded-full">
+            </div>
+            
+            <!-- Foto 5 - Média central -->
+            <div class="absolute top-16 left-16 z-35 rotate-[4deg]">
+                <img src="5.jpg" class="photo-shadow w-36 h-44 object-cover rounded-lg">
+            </div>
+            
+            <!-- Decorações -->
+            <div class="absolute top-6 left-12 z-50 text-3xl text-yellow-400 opacity-80">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="absolute top-24 right-32 z-50 text-2xl text-pink-500">
+                <i class="fas fa-heart"></i>
+            </div>
+        </div>
+
+        <!-- Seção 2: Cluster central -->
+        <div class="relative mb-16 min-h-[320px]">
+            <!-- Foto 6 - Grande inclinada -->
+            <div class="absolute top-0 right-0 z-30 rotate-[-8deg]">
+                <div class="polaroid photo-shadow" data-caption="Momentos especiais">
+                    <img src="6.jpg" class="w-44 h-52 object-cover dreamy">
+                </div>
+            </div>
+            
+            <!-- Foto 7 - Sobreposta -->
+            <div class="absolute top-12 right-32 z-40 rotate-[12deg]">
+                <img src="7.jpg" class="photo-shadow w-28 h-36 object-cover vintage rounded-lg">
+            </div>
+            
+            <!-- Foto 8 - Pequena -->
+            <div class="absolute top-6 left-12 z-25 rotate-[-4deg]">
+                <img src="8.jpg" class="photo-shadow w-20 h-20 object-cover rounded-full">
+            </div>
+            
+            <!-- Foto 9 - Média -->
+            <div class="absolute top-24 left-24 z-35 rotate-[6deg]">
+                <img src="9.jpg" class="photo-shadow w-32 h-40 object-cover dramatic rounded-lg">
+            </div>
+            
+            <!-- Foto 10 - Vertical -->
+            <div class="absolute top-0 left-32 z-20 rotate-[-2deg]">
+                <img src="10.jpg" class="photo-shadow w-16 h-48 object-cover rounded">
+            </div>
+            
+            <!-- Decorações -->
+            <div class="absolute top-16 left-1/2 z-50 text-4xl text-purple-500 opacity-70">
+                <i class="fas fa-spa"></i>
+            </div>
+            <div class="absolute top-32 right-12 z-50 text-2xl text-blue-400">
+                <i class="fas fa-bolt"></i>
+            </div>
+        </div>
+
+        <!-- Seção 3: Cluster inferior -->
+        <div class="relative mb-16 min-h-[350px]">
+            <!-- Foto 11 - Polaroid -->
+            <div class="absolute bottom-0 left-0 z-30 rotate-[5deg] float">
+                <div class="polaroid photo-shadow" data-caption="Sempre juntos">
+                    <img src="11.jpg" class="w-48 h-56 object-cover">
+                </div>
+            </div>
+            
+            <!-- Foto 12 - Sobreposta -->
+            <div class="absolute bottom-12 left-36 z-40 rotate-[-10deg]">
+                <img src="12.jpg" class="photo-shadow w-32 h-40 object-cover dreamy rounded-lg">
+            </div>
+            
+            <!-- Foto 13 - Grande direita -->
+            <div class="absolute bottom-0 right-8 z-25 rotate-[-6deg]">
+                <img src="13.jpg" class="photo-shadow w-40 h-48 object-cover vintage rounded-lg">
+            </div>
+            
+            <!-- Foto 14 - Pequena central -->
+            <div class="absolute bottom-20 left-20 z-35 rotate-[8deg]">
+                <img src="14.jpg" class="photo-shadow w-24 h-24 object-cover rounded-full">
+            </div>
+            
+            <!-- Foto 15 - Vertical -->
+            <div class="absolute bottom-0 right-28 z-20 rotate-[3deg]">
+                <img src="15.jpg" class="photo-shadow w-18 h-52 object-cover dramatic rounded">
+            </div>
+            
+            <!-- Decorações -->
+            <div class="absolute bottom-24 left-16 z-50 text-3xl text-pink-500">
+                <i class="fas fa-heart"></i>
+            </div>
+            <div class="absolute bottom-8 right-40 z-50 text-2xl text-yellow-400">
+                <i class="fas fa-sun"></i>
+            </div>
+        </div>
+
+        <!-- Seção 4: Cluster final -->
+        <div class="relative mb-16 min-h-[320px]">
+            <!-- Foto 16 - Polaroid grande -->
+            <div class="absolute top-0 right-0 z-30 rotate-[-5deg]">
+                <div class="polaroid photo-shadow" data-caption="Eterno amor">
+                    <img src="16.jpg" class="w-44 h-52 object-cover dreamy">
+                </div>
+            </div>
+            
+            <!-- Foto 17 - Sobreposta -->
+            <div class="absolute top-10 right-36 z-40 rotate-[11deg]">
+                <img src="17.jpg" class="photo-shadow w-28 h-36 object-cover vintage rounded-lg">
+            </div>
+            
+            <!-- Foto 18 - Pequena -->
+            <div class="absolute top-6 left-16 z-25 rotate-[-8deg]">
+                <img src="18.jpg" class="photo-shadow w-20 h-20 object-cover rounded-full">
+            </div>
+            
+            <!-- Foto 19 - Média -->
+            <div class="absolute top-24 left-20 z-35 rotate-[6deg]">
+                <img src="19.jpg" class="photo-shadow w-36 h-44 object-cover dramatic rounded-lg">
+            </div>
+            
+            <!-- Foto 20 - Vertical -->
+            <div class="absolute top-0 left-32 z-20 rotate-[-3deg]">
+                <img src="20.jpg" class="photo-shadow w-16 h-48 object-cover rounded">
+            </div>
+            
+            <!-- Decorações finais -->
+            <div class="absolute top-16 left-1/2 z-50 text-4xl text-red-500 opacity-80">
+                <i class="fas fa-heart"></i>
+            </div>
+            <div class="absolute top-32 right-16 z-50 text-3xl text-purple-500">
+                <i class="fas fa-gem"></i>
+            </div>
+        </div>
+
+        <!-- Rodapé com fita -->
+        <div class="relative mt-16 mb-8 text-center">
+            <div class="inline-block relative">
+                <div class="tape top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-6"></div>
+                <p class="kalam text-xl text-gray-800 px-6 py-2 bg-white/90 rounded-full shadow-lg">
+                    Feito com todo nosso amor 💕
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Partículas flutuantes -->
+    <div class="particle top-10 left-10 text-pink-400 text-xl">
+        <i class="fas fa-heart"></i>
+    </div>
+    <div class="particle top-1/3 right-16 text-purple-400 text-lg">
+        <i class="fas fa-star"></i>
+    </div>
+    <div class="particle bottom-1/4 left-1/4 text-yellow-400 text-2xl">
+        <i class="fas fa-sun"></i>
+    </div>
+    <div class="particle bottom-20 right-1/3 text-blue-400 text-xl">
+        <i class="fas fa-bolt"></i>
+    </div>
+
+    <script>
+        // Efeito de brilho aleatório
+        document.querySelectorAll('.photo-shadow').forEach(photo => {
+            photo.addEventListener('mouseenter', function() {
+                this.style.filter = 'brightness(1.1) saturate(1.2)';
+            });
+            photo.addEventListener('mouseleave', function() {
+                this.style.filter = '';
+            });
+        });
+        
+        // Animação de partículas
+        document.querySelectorAll('.particle').forEach(particle => {
+            const randomX = Math.random() * 50;
+            const randomY = Math.random() * 50;
+            particle.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        });
+        
+        // Garantir que o vídeo funcione bem em mobile
+        const video = document.querySelector('.video-background');
+        video.addEventListener('loadeddata', function() {
+            video.play();
+        });
+    </script>
+</body>
+</html>

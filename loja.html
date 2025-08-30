@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temas - Ashley</title>
+    <link rel="icon" href="logotema.png" type="image/png">
+    <style>
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', system-ui, -apple-system, sans-serif;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        :root {
+            /* BlueBerry (Default) */
+            --primary: #4285F4;
+            --on-primary: #FFFFFF;
+            --primary-container: #D6E9FF;
+            --on-primary-container: #002F6C;
+            --background: #FAFCFF;
+            --on-background: #1B1B1F;
+            --surface: #FAFCFF;
+            --on-surface: #1B1B1F;
+            --secondary: #6F7B90;
+            --tertiary: #5C5B7E;
+            --outline: #A3CDFF;
+            --sidebar-bg: #FFFFFF;
+            --card-bg: #FFFFFF;
+            --accordion-header: #EDF5FF;
+            --accordion-header-active: #D6E9FF;
+            --theme-name: 'Material BlueBerry';
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--on-background);
+            animation: fadeIn 0.5s ease-in-out;
+            display: flex;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Barra lateral */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--on-primary-container);
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--primary-container);
+        }
+
+        /* Navegação */
+        .nav-tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-tab {
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--on-surface);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-tab:hover {
+            background-color: var(--primary-container);
+            color: var(--primary);
+        }
+
+        .nav-tab.active {
+            background-color: var(--primary-container);
+            color: var(--primary);
+        }
+
+        .nav-icon {
+            font-size: 1.2rem;
+        }
+
+        /* Área de conteúdo principal */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            max-width: 1200px;
+        }
+
+        /* Cabeçalho */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            color: var(--on-primary-container);
+            font-weight: 500;
+        }
+
+        /* Novo Toggle switch */
+        .theme-switch-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toggle-label {
+            color: var(--on-surface);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* From Uiverse.io by Galahad */
+        .ui-switch {
+            /* switch */
+            --switch-bg: rgb(135, 150, 165);
+            --switch-width: 48px;
+            --switch-height: 20px;
+            /* circle */
+            --circle-diameter: 32px;
+            --circle-bg: var(--primary);
+            --circle-inset: calc((var(--circle-diameter) - var(--switch-height)) / 2);
+        }
+
+        .ui-switch input {
+            display: none;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: var(--switch-width);
+            height: var(--switch-height);
+            background: var(--switch-bg);
+            border-radius: 999px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .slider .circle {
+            top: calc(var(--circle-inset) * -1);
+            left: 0;
+            width: var(--circle-diameter);
+            height: var(--circle-diameter);
+            position: absolute;
+            background: var(--circle-bg);
+            border-radius: inherit;
+            background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjAiIHdpZHRoPSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj4KICAgIDxwYXRoIGZpbGw9IiNmZmYiCiAgICAgICAgZD0iTTkuMzA1IDEuNjY3VjMuNzVoMS4zODlWMS42NjdoLTEuMzl6bS00LjcwNyAxLjk1bC0uOTgyLjk4Mkw1LjA5IDYuMDcybC45ODItLjk4Mi0xLjQ3My0xLjQ3M3ptMTAuODAyIDBMMTMuOTI3IDUuMDlsLjk4Mi45ODIgMS40NzMtMS40NzMtLjk4Mi0uOTgyek0xMCA1LjEzOWE0Ljg3MiA0Ljg3MiAwIDAwLTQuODYyIDQuODZBNC44NzIgNC44NzIgMCAwMDEwIDE0Ljg2MiA0Ljg3MiA0Ljg3MiAwIDAwMTQuODYgMTAgNC44NzIgNC44NzIgMCAwMDEwIDUuMTM5em0wIDEuMzg5QTMuNDYyIDMuNDYyIDAgMDExMy40NzEgMTBhMy40NjIgMy40NjIgMCAwMS0zLjQ3MyAzLjQ3MkEzLjQ2MiAzLjQ2MiAwIDAxNi41MjcgMTAgMy40NjIgMy40NjIgMCAwMTEwIDYuNTI4ek0xLjY2NSA5LjMwNXYxLjM5aDIuMDgzdi0xLjM5SDEuNjY2em0xNC41ODMgMHYxLjM5aDIuMDg0di0xLjM5aC0yLjA4NHpNNS4wOSAxMy45MjhMMy42MTYgMTUuNGwuOTgyLjk4MiAxLjQ3My0xLjQ3My0uOTgyLS45ODJ6bTkuODIwMGwtLjk4Mi45ODIgMS40NzMgMS40NzMuOTgyLS45ODItMS40NzMtMS40NzN6TTkuMzA1IDE2LjI1djIuMDgzaDEuMzg5VjE2LjI1aC0xLjM5eiIgLz4KPC9zdmc+");
+            background-repeat: no-repeat;
+            background-position: center center;
+            -webkit-transition: left 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, -webkit-transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+            -o-transition: left 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+            transition: left 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, -webkit-transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+        }
+
+        .slider .circle::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.75);
+            border-radius: inherit;
+            -webkit-transition: all 500ms;
+            -o-transition: all 500ms;
+            transition: all 500ms;
+            opacity: 0;
+        }
+
+        /* actions */
+        .ui-switch input:checked+.slider .circle {
+            left: calc(100% - var(--circle-diameter));
+            background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjAiIHdpZHRoPSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj4KICAgIDxwYXRoIGZpbGw9IiNmZmYiCiAgICAgICAgZD0iTTQuMiAyLjVsLS43IDEuOC0xLjguNyAxLjguNy43IDEuOC42LTEuOEw2LjcgNWwtMS45LS43LS42LTEuOHptMTUgOC4zYTYuNyA2LjcgMCAxMS02LjYtNi42IDUuOCA1LjggMCAwMDYuNiA2LjZ6IiAvPgo8L3N2Zz4=");
+        }
+
+        .ui-switch input:active+.slider .circle::before {
+            -webkit-transition: 0s;
+            -o-transition: 0s;
+            transition: 0s;
+            opacity: 1;
+            width: 0;
+            height: 0;
+        }
+
+        /* Abas de conteúdo */
+        .content-tabs {
+            display: none;
+        }
+
+        .content-tabs.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        /* Cards de temas */
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .theme-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-card.active::after {
+            content: "";
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 24px;
+            height: 24px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik05IDE2LjE3TDQuODMgMTJsLTEuNDIgMS40MUw5IDE5IDIxIDdsLTEuNDEtMS40MXoiLz48L3N2Zz4=");
+            background-size: 16px;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .theme-preview {
+            width: 100%;
+            height: 120px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .theme-name {
+            font-size: 1.2rem;
+            color: var(--on-surface);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .theme-description {
+            color: var(--secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .theme-button {
+            background-color: var(--primary-container);
+            color: var(--primary);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            margin-top: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+
+        .theme-button:hover {
+            background-color: var(--primary);
+            color: var(--on-primary);
+        }
+
+        /* Módulos */
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .module-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+
+        .module-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .module-icon {
+            width: 48px;
+            height: 48px;
+            background-color: var(--primary-container);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .module-name {
+            font-size: 1.2rem;
+            color: var(--on-surface);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .module-description {
+            color: var(--secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .module-button {
+            background-color: var(--primary);
+            color: var(--on-primary);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+
+        .module-button:hover {
+            background-color: var(--primary-container);
+            color: var(--primary);
+        }
+
+        /* Gradientes para os temas - Light */
+        .gradient-blueberry {
+            background: linear-gradient(135deg, #4285F4 0%, #D6E9FF 30%, #FAFCFF 60%);
+        }
+
+        .gradient-graphene {
+            background: linear-gradient(135deg, #444444 0%, #B1B1B1 30%, #F2F2F2 60%);
+        }
+
+        .gradient-redheart {
+            background: linear-gradient(135deg, #B71C1C 0%, #FFDEDE 30%, #FFF9F9 60%);
+        }
+
+        /* Gradientes para os temas - Dark */
+        .gradient-blueberry-dark {
+            background: linear-gradient(135deg, #2F6CD5 0%, #17457A 30%, #0B254C 60%);
+        }
+
+        .gradient-graphene-dark {
+            background: linear-gradient(135deg, #363636 0%, #1E1E1E 30%, #111111 60%);
+        }
+
+        .gradient-redheart-dark {
+            background: linear-gradient(135deg, #9C1A1A 0%, #520F0F 30%, #2E0A0A 60%);
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 16px;
+            }
+            
+            .main-content {
+                padding: 24px 16px;
+            }
+
+            .nav-tabs {
+                flex-direction: row;
+                overflow-x: auto;
+                padding-bottom: 8px;
+            }
+
+            .nav-tab {
+                white-space: nowrap;
+            }
+
+            .theme-grid, .module-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .theme-switch-container {
+                position: static;
+                margin-bottom: 16px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra lateral -->
+    <aside class="sidebar">
+        <h1 class="sidebar-title">Temas - Ashley</h1>
+        
+        <div class="nav-tabs">
+            <div class="nav-tab active" onclick="switchTab('appearance')">
+                <span class="nav-icon">🎨</span>
+                <span>Aparência</span>
+            </div>
+            <div class="nav-tab" onclick="switchTab('modules')">
+                <span class="nav-icon">🧩</span>
+                <span>Módulos</span>
+            </div>
+        </div>
+    </aside>
+    
+    <!-- Conteúdo principal -->
+    <main class="main-content">
+        <!-- Cabeçalho -->
+        <div class="header">
+            <h1 class="page-title" id="content-title">Aparência</h1>
+        </div>
+        
+        <!-- Novo Toggle switch de tema escuro -->
+        <div class="theme-switch-container">
+            <span class="toggle-label">Tema Escuro</span>
+            <label class="ui-switch">
+                <input type="checkbox" id="dark-mode-toggle" onchange="toggleDarkMode()">
+                <div class="slider">
+                    <div class="circle"></div>
+                </div>
+            </label>
+        </div>
+        
+        <!-- Conteúdo de Aparência -->
+        <div id="appearance-tab" class="content-tabs active">
+            <p style="color: var(--secondary); margin-bottom: 24px;">
+                Escolha um tema para personalizar a aparência do Ashley em todos os dispositivos.
+            </p>
+            
+            <div class="theme-grid">
+                <!-- BlueBerry -->
+                <div class="theme-card active" onclick="applyTheme('blueberry')">
+                    <div class="theme-preview gradient-blueberry" id="preview-blueberry"></div>
+                    <h3 class="theme-name">Material BlueBerry</h3>
+                    <p class="theme-description">
+                        Tema padrão com cores azuis vibrantes, seguindo as diretrizes do Material You.
+                    </p>
+                    <button class="theme-button">Ativo</button>
+                </div>
+                
+                <!-- Graphene -->
+                <div class="theme-card" onclick="applyTheme('graphene')">
+                    <div class="theme-preview gradient-graphene" id="preview-graphene"></div>
+                    <h3 class="theme-name">Material Graphene</h3>
+                    <p class="theme-description">
+                        Elegante tema em tons de cinza e preto para um visual moderno e sofisticado.
+                    </p>
+                    <button class="theme-button">Selecionar</button>
+                </div>
+                
+                <!-- Red Heart -->
+                <div class="theme-card" onclick="applyTheme('redheart')">
+                    <div class="theme-preview gradient-redheart" id="preview-redheart"></div>
+                    <h3 class="theme-name">Material Red Heart</h3>
+                    <p class="theme-description">
+                        Tema vibrante em vermelho para uma aparência apaixonada e energética.
+                    </p>
+                    <button class="theme-button">Selecionar</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Conteúdo de Módulos -->
+        <div id="modules-tab" class="content-tabs">
+            <p style="color: var(--secondary); margin-bottom: 24px;">
+                Adicione módulos para expandir as funcionalidades do Ashley e AshleyCore.
+            </p>
+            
+            <div class="module-grid">
+                <!-- Módulo 1 -->
+                <div class="module-card">
+                    <div class="module-icon">🔊</div>
+                    <h3 class="module-name">Controle por Voz Avançado</h3>
+                    <p class="module-description">
+                        Adiciona comandos de voz adicionais e maior precisão no reconhecimento para o Ashley.
+                    </p>
+                    <button class="module-button">Instalar</button>
+                </div>
+                
+                <!-- Módulo 2 -->
+                <div class="module-card">
+                    <div class="module-icon">🤖</div>
+                    <h3 class="module-name">IA de Conversação</h3>
+                    <p class="module-description">
+                        Melhora as habilidades de conversação do AshleyCore com respostas mais naturais.
+                    </p>
+                    <button class="module-button">Instalar</button>
+                </div>
+                
+                <!-- Módulo 3 -->
+                <div class="module-card">
+                    <div class="module-icon">🏠</div>
+                    <h3 class="module-name">Automação Residencial</h3>
+                    <p class="module-description">
+                        Conecte o Ashley aos seus dispositivos IoT para controle total da sua casa.
+                    </p>
+                    <button class="module-button">Instalar</button>
+                </div>
+                
+                <!-- Módulo 4 -->
+                <div class="module-card">
+                    <div class="module-icon">📊</div>
+                    <h3 class="module-name">Análise de Dados</h3>
+                    <p class="module-description">
+                        Permite ao AshleyCore processar e visualizar grandes conjuntos de dados.
+                    </p>
+                    <button class="module-button">Instalar</button>
+                </div>
+                
+                <!-- Módulo 5 -->
+                <div class="module-card">
+                    <div class="module-icon">🔒</div>
+                    <h3 class="module-name">Segurança Avançada</h3>
+                    <p class="module-description">
+                        Adiciona criptografia de ponta a ponta e proteção de privacidade.
+                    </p>
+                    <button class="module-button">Instalar</button>
+                </div>
+                
+                <!-- Módulo 6 -->
+                <div class="module-card">
+                    <div class="module-icon">🌐</div>
+                    <h3 class="module-name">Tradução em Tempo Real</h3>
+                    <p class="module-description">
+                        Permite ao Ashley traduzir conversas em tempo real para múltiplos idiomas.
+                    </p>
+                    <button class="module-button">Instalar</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Tema atual e modo escuro
+        let currentTheme = 'blueberry';
+        let isDarkMode = false;
+
+        // Verificar preferências salvas no localStorage (simulado com variáveis)
+        let savedTheme = 'blueberry';
+        let savedDarkMode = false;
+
+        // Inicializar com tema salvo
+        currentTheme = savedTheme;
+        isDarkMode = savedDarkMode;
+
+        // Aplicar configurações salvas
+        document.getElementById('dark-mode-toggle').checked = isDarkMode;
+        applyTheme(currentTheme, false);
+
+        // Alternar abas
+        function switchTab(tabId) {
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.content-tabs').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            event.currentTarget.classList.add('active');
+            document.getElementById(tabId + '-tab').classList.add('active');
+            document.getElementById('content-title').textContent = 
+                tabId === 'appearance' ? 'Aparência' : 'Módulos';
+        }
+
+        // Toggle dark mode
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            applyTheme(currentTheme, true);
+            updatePreviewGradients();
+        }
+
+        // Aplicar tema
+        function applyTheme(theme, save = true) {
+            // Remover classe ativa de todos os cards
+            document.querySelectorAll('.theme-card').forEach(card => {
+                card.classList.remove('active');
+            });
+
+            // Encontrar e ativar o card do tema selecionado
+            const themeCards = document.querySelectorAll('.theme-card');
+            themeCards.forEach((card, index) => {
+                const themes = ['blueberry', 'graphene', 'redheart'];
+                if (themes[index] === theme) {
+                    card.classList.add('active');
+                }
+            });
+
+            // Atualizar botões
+            document.querySelectorAll('.theme-button').forEach(button => {
+                button.textContent = 'Selecionar';
+            });
+            
+            const activeCard = document.querySelector('.theme-card.active');
+            if (activeCard) {
+                activeCard.querySelector('.theme-button').textContent = 'Ativo';
+            }
+
+            // Definir variáveis CSS baseadas no tema
+            const root = document.documentElement;
+            currentTheme = theme;
+
+            if (save) {
+                savedTheme = theme;
+                savedDarkMode = isDarkMode;
+            }
+
+            if (theme === 'blueberry') {
+                if (isDarkMode) {
+                    // BlueBerry Dark - Atualizado conforme Material Design
+                    root.style.setProperty('--primary', '#2F6CD5');
+                    root.style.setProperty('--on-primary', '#FFFFFF');
+                    root.style.setProperty('--primary-container', '#17457A');
+                    root.style.setProperty('--on-primary-container', '#A3CDFF');
+                    root.style.setProperty('--background', '#0B254C');
+                    root.style.setProperty('--on-background', '#FFFFFF');
+                    root.style.setProperty('--surface', '#0B254C');
+                    root.style.setProperty('--on-surface', '#FFFFFF');
+                    root.style.setProperty('--sidebar-bg', '#17457A');
+                    root.style.setProperty('--card-bg', '#225CA4');
+                    root.style.setProperty('--secondary', '#6F7B90');
+                    root.style.setProperty('--tertiary', '#5C5B7E');
+                    root.style.setProperty('--outline', '#225CA4');
+                } else {
+                    // BlueBerry Light
+                    root.style.setProperty('--primary', '#4285F4');
+                    root.style.setProperty('--on-primary', '#FFFFFF');
+                    root.style.setProperty('--primary-container', '#D6E9FF');
+                    root.style.setProperty('--on-primary-container', '#002F6C');
+                    root.style.setProperty('--background', '#FAFCFF');
+                    root.style.setProperty('--on-background', '#1B1B1F');
+                    root.style.setProperty('--surface', '#FAFCFF');
+                    root.style.setProperty('--on-surface', '#1B1B1F');
+                    root.style.setProperty('--sidebar-bg', '#FFFFFF');
+                    root.style.setProperty('--card-bg', '#FFFFFF');
+                    root.style.setProperty('--secondary', '#6F7B90');
+                    root.style.setProperty('--tertiary', '#5C5B7E');
+                    root.style.setProperty('--outline', '#A3CDFF');
+                }
+            } else if (theme === 'graphene') {
+                if (isDarkMode) {
+                    // Graphene Dark - Atualizado conforme especificado
+                    root.style.setProperty('--primary', '#363636');
+                    root.style.setProperty('--on-primary', '#FFFFFF');
+                    root.style.setProperty('--primary-container', '#1E1E1E');
+                    root.style.setProperty('--on-primary-container', '#B1B1B1');
+                    root.style.setProperty('--background', '#111111');
+                    root.style.setProperty('--on-background', '#D4D4D4');
+                    root.style.setProperty('--surface', '#111111');
+                    root.style.setProperty('--on-surface', '#D4D4D4');
+                    root.style.setProperty('--sidebar-bg', '#1E1E1E');
+                    root.style.setProperty('--card-bg', '#2A2A2A');
+                    root.style.setProperty('--secondary', '#6F7B90');
+                    root.style.setProperty('--tertiary', '#5C5B7E');
+                    root.style.setProperty('--outline', '#2A2A2A');
+                } else {
+                    // Graphene Light
+                    root.style.setProperty('--primary', '#444444');
+                    root.style.setProperty('--on-primary', '#FFFFFF');
+                    root.style.setProperty('--primary-container', '#B1B1B1');
+                    root.style.setProperty('--on-primary-container', '#1E1E1E');
+                    root.style.setProperty('--background', '#F2F2F2');
+                    root.style.setProperty('--on-background', '#1B1B1F');
+                    root.style.setProperty('--surface', '#F2F2F2');
+                    root.style.setProperty('--on-surface', '#1B1B1F');
+                    root.style.setProperty('--sidebar-bg', '#FFFFFF');
+                    root.style.setProperty('--card-bg', '#FFFFFF');
+                    root.style.setProperty('--secondary', '#6F7B90');
+                    root.style.setProperty('--tertiary', '#5C5B7E');
+                    root.style.setProperty('--outline', '#B1B1B1');
+                }
+            } else if (theme === 'redheart') {
+                if (isDarkMode) {
+                    // Red Heart Dark - Atualizado conforme especificado
+                    root.style.setProperty('--primary', '#9C1A1A');
+                    root.style.setProperty('--on-primary', '#FFFFFF');
+                    root.style.setProperty('--primary-container', '#520F0F');
+                    root.style.setProperty('--on-primary-container', '#FFDEDE');
+                    root.style.setProperty('--background', '#2E0A0A');
+                    root.style.setProperty('--on-background', '#FFEDED');
+                    root.style.setProperty('--surface', '#2E0A0A');
+                    root.style.setProperty('--on-surface', '#FFEDED');
+                    root.style.setProperty('--sidebar-bg', '#520F0F');
+                    root.style.setProperty('--card-bg', '#771515');
+                    root.style.setProperty('--secondary', '#6F7B90');
+                    root.style.setProperty('--tertiary', '#5C5B7E');
+                    root.style.setProperty('--outline', '#771515');
+                } else {
+                    // Red Heart Light
+                    root.style.setProperty('--primary', '#B71C1C');
+                    root.style.setProperty('--on-primary', '#FFFFFF');
+                    root.style.setProperty('--primary-container', '#FFDEDE');
+                    root.style.setProperty('--on-primary-container', '#520F0F');
+                    root.style.setProperty('--background', '#FFF9F9');
+                    root.style.setProperty('--on-background', '#1B1B1F');
+                    root.style.setProperty('--surface', '#FFF9F9');
+                    root.style.setProperty('--on-surface', '#1B1B1F');
+                    root.style.setProperty('--sidebar-bg', '#FFFFFF');
+                    root.style.setProperty('--card-bg', '#FFFFFF');
+                    root.style.setProperty('--secondary', '#6F7B90');
+                    root.style.setProperty('--tertiary', '#5C5B7E');
+                    root.style.setProperty('--outline', '#FFDEDE');
+                }
+            }
+
+            // Atualizar cor do círculo do toggle switch
+            document.documentElement.style.setProperty('--circle-bg', getComputedStyle(document.documentElement).getPropertyValue('--primary'));
+
+            updatePreviewGradients();
+        }
+
+        // Atualizar gradientes dos previews
+        function updatePreviewGradients() {
+            const previews = {
+                'blueberry': document.getElementById('preview-blueberry'),
+                'graphene': document.getElementById('preview-graphene'),
+                'redheart': document.getElementById('preview-redheart')
+            };
+
+            Object.keys(previews).forEach(theme => {
+                const preview = previews[theme];
+                if (preview) {
+                    preview.className = `theme-preview gradient-${theme}${isDarkMode ? '-dark' : ''}`;
+                }
+            });
+        }
+
+        // Aplicar configurações ao carregar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            applyTheme(currentTheme, false);
+            updatePreviewGradients();
+        });
+    </script>
+</body>
+</html>
