@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <title>Nosso Scrapbook Digital</title>
+    <title>2 Meses de Namoro</title>
+    <link rel="icon" type="image/png" href="icon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Kalam:wght@400;700&family=Bebas+Neue&display=swap" rel="stylesheet">
     <style>
-        /* Fontes */
         .dancing { font-family: "Dancing Script", cursive; }
         .kalam { font-family: "Kalam", cursive; }
         .bebas { font-family: "Bebas Neue", sans-serif; }
         
-        /* Vídeo de fundo */
         .video-background {
             position: fixed;
             top: 0;
@@ -24,7 +23,6 @@
             z-index: -2;
         }
         
-        /* Camada de textura sobre o vídeo */
         .texture-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -34,7 +32,6 @@
             z-index: 1;
         }
         
-        /* Efeito de fita adesiva */
         .tape {
             position: absolute;
             width: 60px;
@@ -45,7 +42,6 @@
             z-index: 10;
         }
         
-        /* Sombra de foto premium */
         .photo-shadow {
             box-shadow: 0 6px 15px rgba(0,0,0,0.3), 0 0 0 2px #fff, 0 0 0 4px rgba(0,0,0,0.1);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -56,7 +52,6 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.4), 0 0 0 3px #fff, 0 0 0 6px rgba(0,0,0,0.15);
         }
         
-        /* Animações */
         @keyframes float {
             0%, 100% { transform: translateY(0) rotate(0); }
             50% { transform: translateY(-8px) rotate(1deg); }
@@ -73,12 +68,10 @@
         .pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
         .rotate-slow { animation: rotate-slow 25s linear infinite; }
         
-        /* Efeitos de filtro */
         .vintage { filter: sepia(0.3) contrast(1.1) brightness(1.05); }
         .dreamy { filter: brightness(1.1) saturate(1.2) hue-rotate(10deg); }
         .dramatic { filter: contrast(1.3) brightness(0.9) grayscale(0.2); }
         
-        /* Molduras decorativas */
         .polaroid {
             background: #fff;
             padding: 10px 10px 25px;
@@ -97,7 +90,6 @@
             color: #333;
         }
         
-        /* Partículas flutuantes */
         .particle {
             position: absolute;
             pointer-events: none;
@@ -105,7 +97,6 @@
             z-index: 5;
         }
         
-        /* Camada de brilho */
         .glow-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -115,7 +106,6 @@
             z-index: 2;
         }
         
-        /* Modal de foto */
         .photo-modal {
             display: none;
             position: fixed;
@@ -210,7 +200,89 @@
             right: 20px;
         }
         
-        /* Ajustes para mobile */
+        .music-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .music-popup.show {
+            opacity: 1;
+        }
+        
+        .music-popup.hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .popup-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 320px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .music-popup.show .popup-content {
+            transform: scale(1);
+        }
+        
+        .popup-message {
+            font-family: "Kalam", cursive;
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 25px;
+        }
+        
+        .popup-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .popup-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-family: "Bebas Neue", sans-serif;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+        
+        .popup-btn.yes {
+            background: #ff6b9d;
+            color: white;
+        }
+        
+        .popup-btn.yes:hover {
+            background: #ff5a8a;
+            transform: scale(1.05);
+        }
+        
+        .popup-btn.no {
+            background: #e0e0e0;
+            color: #333;
+        }
+        
+        .popup-btn.no:hover {
+            background: #d0d0d0;
+            transform: scale(1.05);
+        }
+        
         @media (max-width: 640px) {
             .photo-container {
                 transform: scale(0.9);
@@ -227,27 +299,35 @@
                 height: 40px;
                 font-size: 16px;
             }
+            
+            .popup-content {
+                padding: 25px 20px;
+                max-width: 280px;
+            }
+            
+            .popup-message {
+                font-size: 20px;
+            }
         }
     </style>
 </head>
 <body class="min-h-screen overflow-x-hidden relative">
-    <!-- Vídeo de fundo -->
     <video autoplay muted loop playsinline class="video-background">
         <source src="fundo.mp4" type="video/mp4">
-        <!-- Fallback para navegadores que não suportam vídeo -->
         <div class="bg-gradient-to-br from-pink-100 via-purple-50 to-indigo-100 w-full h-full"></div>
     </video>
     
-    <!-- Camadas de efeito -->
+    <audio id="backgroundMusic" loop>
+        <source src="audio.mp3" type="audio/mpeg">
+    </audio>
+    
     <div class="texture-overlay"></div>
     <div class="glow-overlay"></div>
     
-    <!-- Container principal - Otimizado para mobile -->
     <div class="max-w-md mx-auto relative z-10 photo-container">
-        <!-- Cabeçalho com efeitos -->
         <div class="relative mb-12 mt-6 text-center">
             <h1 class="dancing text-5xl text-pink-600 relative inline-block mb-2">
-                Nosso Amor
+                2 Meses de Namoro
                 <div class="tape top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-5"></div>
             </h1>
             <p class="bebas text-2xl text-purple-800 tracking-widest">MEMÓRIAS INESQUECÍVEIS</p>
@@ -258,37 +338,30 @@
             </div>
         </div>
 
-        <!-- Seção 1: Cluster superior -->
         <div class="relative mb-20 min-h-[300px]">
-            <!-- Foto 1 - Polaroid grande -->
             <div class="absolute top-0 left-0 z-30 rotate-[-6deg] float">
                 <div class="polaroid photo-shadow" data-caption="Nosso início">
                     <img src="1.jpg" class="w-32 h-40 object-cover vintage cursor-pointer" onclick="openModal(1)">
                 </div>
             </div>
             
-            <!-- Foto 2 - Sobreposta -->
             <div class="absolute top-16 left-24 z-40 rotate-[10deg]">
                 <img src="2.jpg" class="photo-shadow w-24 h-32 object-cover dreamy rounded-lg cursor-pointer" onclick="openModal(2)">
                 <div class="tape top-2 left-2 w-12 h-4"></div>
             </div>
             
-            <!-- Foto 3 - Tira vertical -->
             <div class="absolute top-0 right-8 z-20 rotate-[2deg]">
                 <img src="3.jpg" class="photo-shadow w-12 h-40 object-cover dramatic rounded cursor-pointer" onclick="openModal(3)">
             </div>
             
-            <!-- Foto 4 - Pequena decorativa -->
             <div class="absolute top-24 right-20 z-25 rotate-[-12deg]">
                 <img src="4.jpg" class="photo-shadow w-20 h-20 object-cover rounded-full cursor-pointer" onclick="openModal(4)">
             </div>
             
-            <!-- Foto 5 - Média central -->
             <div class="absolute top-20 left-12 z-35 rotate-[4deg]">
                 <img src="5.jpg" class="photo-shadow w-28 h-36 object-cover rounded-lg cursor-pointer" onclick="openModal(5)">
             </div>
             
-            <!-- Decorações -->
             <div class="absolute top-6 left-12 z-50 text-3xl text-yellow-400 opacity-80">
                 <i class="fas fa-star"></i>
             </div>
@@ -297,36 +370,29 @@
             </div>
         </div>
 
-        <!-- Seção 2: Cluster central -->
         <div class="relative mb-20 min-h-[280px]">
-            <!-- Foto 6 - Grande inclinada -->
             <div class="absolute top-0 right-0 z-30 rotate-[-8deg]">
                 <div class="polaroid photo-shadow" data-caption="Momentos especiais">
                     <img src="6.jpg" class="w-36 h-44 object-cover dreamy cursor-pointer" onclick="openModal(6)">
                 </div>
             </div>
             
-            <!-- Foto 7 - Sobreposta -->
             <div class="absolute top-12 right-28 z-40 rotate-[12deg]">
                 <img src="7.jpg" class="photo-shadow w-24 h-32 object-cover vintage rounded-lg cursor-pointer" onclick="openModal(7)">
             </div>
             
-            <!-- Foto 8 - Pequena -->
             <div class="absolute top-6 left-12 z-25 rotate-[-4deg]">
                 <img src="8.jpg" class="photo-shadow w-16 h-16 object-cover rounded-full cursor-pointer" onclick="openModal(8)">
             </div>
             
-            <!-- Foto 9 - Média -->
             <div class="absolute top-20 left-20 z-35 rotate-[6deg]">
                 <img src="9.jpg" class="photo-shadow w-28 h-36 object-cover dramatic rounded-lg cursor-pointer" onclick="openModal(9)">
             </div>
             
-            <!-- Foto 10 - Vertical -->
             <div class="absolute top-0 left-28 z-20 rotate-[-2deg]">
                 <img src="10.jpg" class="photo-shadow w-12 h-40 object-cover rounded cursor-pointer" onclick="openModal(10)">
             </div>
             
-            <!-- Decorações -->
             <div class="absolute top-16 left-1/2 z-50 text-4xl text-purple-500 opacity-70">
                 <i class="fas fa-spa"></i>
             </div>
@@ -335,36 +401,29 @@
             </div>
         </div>
 
-        <!-- Seção 3: Cluster inferior -->
         <div class="relative mb-20 min-h-[300px]">
-            <!-- Foto 11 - Polaroid -->
             <div class="absolute bottom-0 left-0 z-30 rotate-[5deg] float">
                 <div class="polaroid photo-shadow" data-caption="Sempre juntos">
                     <img src="11.jpg" class="w-40 h-48 object-cover cursor-pointer" onclick="openModal(11)">
                 </div>
             </div>
             
-            <!-- Foto 12 - Sobreposta -->
             <div class="absolute bottom-16 left-32 z-40 rotate-[-10deg]">
                 <img src="12.jpg" class="photo-shadow w-28 h-36 object-cover dreamy rounded-lg cursor-pointer" onclick="openModal(12)">
             </div>
             
-            <!-- Foto 13 - Grande direita -->
             <div class="absolute bottom-0 right-8 z-25 rotate-[-6deg]">
                 <img src="13.jpg" class="photo-shadow w-32 h-40 object-cover vintage rounded-lg cursor-pointer" onclick="openModal(13)">
             </div>
             
-            <!-- Foto 14 - Pequena central -->
             <div class="absolute bottom-20 left-20 z-35 rotate-[8deg]">
                 <img src="14.jpg" class="photo-shadow w-20 h-20 object-cover rounded-full cursor-pointer" onclick="openModal(14)">
             </div>
             
-            <!-- Foto 15 - Vertical -->
             <div class="absolute bottom-0 right-24 z-20 rotate-[3deg]">
                 <img src="15.jpg" class="photo-shadow w-14 h-44 object-cover dramatic rounded cursor-pointer" onclick="openModal(15)">
             </div>
             
-            <!-- Decorações -->
             <div class="absolute bottom-24 left-16 z-50 text-3xl text-pink-500">
                 <i class="fas fa-heart"></i>
             </div>
@@ -373,36 +432,29 @@
             </div>
         </div>
 
-        <!-- Seção 4: Cluster final -->
         <div class="relative mb-20 min-h-[280px]">
-            <!-- Foto 16 - Polaroid grande -->
             <div class="absolute top-0 right-0 z-30 rotate-[-5deg]">
                 <div class="polaroid photo-shadow" data-caption="Eterno amor">
                     <img src="16.jpg" class="w-36 h-44 object-cover dreamy cursor-pointer" onclick="openModal(16)">
                 </div>
             </div>
             
-            <!-- Foto 17 - Sobreposta -->
             <div class="absolute top-10 right-32 z-40 rotate-[11deg]">
                 <img src="17.jpg" class="photo-shadow w-24 h-32 object-cover vintage rounded-lg cursor-pointer" onclick="openModal(17)">
             </div>
             
-            <!-- Foto 18 - Pequena -->
             <div class="absolute top-6 left-16 z-25 rotate-[-8deg]">
                 <img src="18.jpg" class="photo-shadow w-16 h-16 object-cover rounded-full cursor-pointer" onclick="openModal(18)">
             </div>
             
-            <!-- Foto 19 - Média -->
             <div class="absolute top-20 left-20 z-35 rotate-[6deg]">
                 <img src="19.jpg" class="photo-shadow w-28 h-36 object-cover dramatic rounded-lg cursor-pointer" onclick="openModal(19)">
             </div>
             
-            <!-- Foto 20 - Vertical -->
             <div class="absolute top-0 left-28 z-20 rotate-[-3deg]">
                 <img src="20.jpg" class="photo-shadow w-12 h-40 object-cover rounded cursor-pointer" onclick="openModal(20)">
             </div>
             
-            <!-- Decorações finais -->
             <div class="absolute top-16 left-1/2 z-50 text-4xl text-red-500 opacity-80">
                 <i class="fas fa-heart"></i>
             </div>
@@ -411,7 +463,6 @@
             </div>
         </div>
 
-        <!-- Rodapé com fita -->
         <div class="relative mt-16 mb-8 text-center">
             <div class="inline-block relative">
                 <div class="tape top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-6"></div>
@@ -422,7 +473,6 @@
         </div>
     </div>
 
-    <!-- Modal de Foto -->
     <div id="photoModal" class="photo-modal">
         <span class="close-btn" onclick="closeModal()">&times;</span>
         <button class="nav-btn prev-btn" onclick="changePhoto(-1)">
@@ -437,7 +487,16 @@
         </div>
     </div>
 
-    <!-- Partículas flutuantes -->
+    <div id="musicPopup" class="music-popup">
+        <div class="popup-content">
+            <div class="popup-message">Oi amor:D bora curtir uma musica enquanto vemos?</div>
+            <div class="popup-buttons">
+                <button class="popup-btn yes" onclick="startMusic()">SIM</button>
+                <button class="popup-btn no" onclick="closeMusicPopup()">NÃO</button>
+            </div>
+        </div>
+    </div>
+
     <div class="particle top-10 left-10 text-pink-400 text-xl">
         <i class="fas fa-heart"></i>
     </div>
@@ -452,31 +511,74 @@
     </div>
 
     <script>
-        // Mensagens especiais para cada foto
-        const messages = {
-            1: "No início de tudo, já sabia que você era especial ✨",
-            2: "Cada sorriso seu ilumina meus dias mais escuros 🌞",
-            3: "Nossos olhares dizem o que as palavras não expressam 💕",
-            4: "Você é a peça que faltava no meu quebra-cabeça 🧩",
-            5: "Juntos, somos mais fortes do que qualquer tempestade ⛈️",
-            6: "Momentos como este são eternizados em meu coração 💖",
-            7: "Sua presença é meu lugar favorito no mundo 🌍",
-            8: "Até nas pequenas coisas, vejo nosso grande amor 🔍",
-            9: "Cada dia ao seu lado é uma nova aventura 🗺️",
-            10: "Nossa conexão vai além do que os olhos podem ver 👁️",
-            11: "Sempre juntos, sempre em harmonia 🎵",
-            12: "Você é minha calma em meio ao caos 🌊",
-            13: "Nosso amor é a história mais bonita que já vivi 📖",
-            14: "Com você, até o silêncio é confortável 🤫",
-            15: "Cada detalhe seu me faz te amar mais ❤️",
-            16: "Nosso amor é eterno, como as estrelas no céu ⭐",
-            17: "Você é minha pessoa, minha metade, meu tudo 🌺",
-            18: "No seu abraço, encontro meu lar 🏠",
-            19: "Cada momento contigo é um tesouro 💎",
-            20: "Para sempre e além, meu amor 🚀"
-        };
+        const messages = [
+            "A distância é só um teste para ver até onde nosso amor pode chegar ✈️",
+            "Cada quilômetro entre nós é preenchido com pensamentos de você 💌",
+            "Nosso amor atravessa fronteiras e fusos horários 🌍",
+            "Mesmo longe, sinto seu abraço quando preciso 🤗",
+            "A saudade dói, mas saber que te tenho faz tudo valer a pena 💖",
+            "Nossos corações estão juntos, mesmo nossos corpos estando longe ❤️",
+            "A distância nos ensina o valor de cada momento juntos ⏳",
+            "Espero o dia em que não precisarei mais dizer 'até logo' 🌅",
+            "Você é minha luz no fim do túnel da distância 💡",
+            "Cada mensagem sua é um presente que guardo no coração 📱",
+            "A distância torna nossos encontros ainda mais especiais ✨",
+            "Nosso amor é como o Wi-Fi: invisível, mas sempre conectado 📶",
+            "A saudade é o preço que pago por amar alguém tão especial 💝",
+            "Cada segundo longe de você é um segundo a mais para sonhar contigo 💭",
+            "A distância não define nosso amor, nós definimos 💑",
+            "Mesmo longe, você é minha prioridade número um 🥇",
+            "Cada dia longe é um dia a menos para estarmos juntos 🗓️",
+            "Nosso amor é mais forte que qualquer distância 💪",
+            "A distância é só um número, nosso amor é infinito ♾️",
+            "Espero ansiosamente pelo dia em que a distância será só uma memória 🌈",
+            "Você vale cada quilômetro de distância 💯",
+            "A distância nos torna mais criativos para demonstrar amor 🎨",
+            "Cadeia de mensagens: nosso elo de amor moderno 🔗",
+            "A distância não impede que eu te ame todos os dias 🌹",
+            "Nosso amor transcende qualquer barreira física 🚀",
+            "A saudade é a prova de que nosso amor é real 💯",
+            "Centauros de distância, mas você sempre perto do meu coração 🏹",
+            "A distância é só um capítulo, não a história toda 📖",
+            "Espero o dia em que 'boa noite' será dito pessoalmente 🌙",
+            "Nosso amor é como as estrelas: brilha mesmo à distância ⭐",
+            "A distância nos ensina a valorizar o que realmente importa 💎",
+            "Cada segundo longe é um investimento em nosso futuro juntos ⏰",
+            "A distância não separa quem se ama de verdade 💕",
+            "Nosso amor é maior que qualquer mapa 🗺️",
+            "A saudade é o preço do amor verdadeiro 💰",
+            "Cada mensagem sua é um raio de sol no meu dia ☀️",
+            "A distância nos torna mais fortes juntos 💪",
+            "Espero o dia em que não precisarei mais de videochamadas 📹",
+            "Nosso amor é como o tempo: não mede distâncias ⏱️",
+            "A distância é só um obstáculo que superaremos juntos 🏆",
+            "Cadeia de pensamentos: nosso elo invisível 💭",
+            "A distância não apaga nossos sorrisos 😊",
+            "Nosso amor é como o vento: não se vê, mas se sente 🌬️",
+            "A saudade é a lembrança de que te amo 💓",
+            "Cada dia longe é um dia a menos para estarmos juntos para sempre 🕰️",
+            "A distância nos torna mais criativos em nosso amor 🎭",
+            "Espero o dia em que 'eu te amo' será dito olho no olho 👁️",
+            "Nosso amor é como a lua: brilha mesmo longe 🌕",
+            "A distância não separa corações que se amam ❤️",
+            "Cadeia de carinhos: nosso vínculo à distância 🤗",
+            "A saudade é a prova de que nosso amor é real e verdadeiro ✅",
+            "Nosso amor é como o oceano: profundo e sem limites 🌊",
+            "A distância nos ensina a valorizar cada momento juntos ⏳",
+            "Espero o dia em que a distância será só uma história para contar 📚",
+            "Cada segundo longe é um segundo a mais para te amar mais 💖",
+            "A distância não impede que você seja meu tudo 🌟",
+            "Nosso amor é como as montanhas: inabalável 🏔️",
+            "A saudade é a certeza de que nosso amor vale a pena 💯",
+            "Cadeia de sonhos: nosso projeto de futuro juntos 💭"
+        ];
         
         let currentPhoto = 1;
+        
+        function getRandomMessage() {
+            const randomIndex = Math.floor(Math.random() * messages.length);
+            return messages[randomIndex];
+        }
         
         function openModal(photoNumber) {
             currentPhoto = photoNumber;
@@ -485,7 +587,7 @@
             const modalMessage = document.getElementById('modalMessage');
             
             modalImage.src = photoNumber + '.jpg';
-            modalMessage.textContent = messages[photoNumber];
+            modalMessage.textContent = getRandomMessage();
             
             modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
@@ -507,10 +609,9 @@
             const modalMessage = document.getElementById('modalMessage');
             
             modalImage.src = currentPhoto + '.jpg';
-            modalMessage.textContent = messages[currentPhoto];
+            modalMessage.textContent = getRandomMessage();
         }
         
-        // Fechar modal ao clicar fora da imagem
         window.onclick = function(event) {
             const modal = document.getElementById('photoModal');
             if (event.target == modal) {
@@ -518,7 +619,32 @@
             }
         }
         
-        // Efeito de brilho aleatório
+        function startMusic() {
+            const audio = document.getElementById('backgroundMusic');
+            audio.volume = 0.3;
+            audio.play();
+            closeMusicPopup();
+        }
+        
+        function closeMusicPopup() {
+            const popup = document.getElementById('musicPopup');
+            popup.classList.remove('show');
+            popup.classList.add('hide');
+            
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 500);
+        }
+        
+        window.addEventListener('load', function() {
+            const popup = document.getElementById('musicPopup');
+            popup.style.display = 'flex';
+            
+            setTimeout(() => {
+                popup.classList.add('show');
+            }, 100);
+        });
+        
         document.querySelectorAll('.photo-shadow').forEach(photo => {
             photo.addEventListener('mouseenter', function() {
                 this.style.filter = 'brightness(1.1) saturate(1.2)';
@@ -528,18 +654,18 @@
             });
         });
         
-        // Animação de partículas
         document.querySelectorAll('.particle').forEach(particle => {
             const randomX = Math.random() * 50;
             const randomY = Math.random() * 50;
             particle.style.transform = `translate(${randomX}px, ${randomY}px)`;
         });
         
-        // Garantir que o vídeo funcione bem em mobile
         const video = document.querySelector('.video-background');
         video.addEventListener('loadeddata', function() {
             video.play();
         });
+        
+        //Te amo
     </script>
 </body>
 </html>
